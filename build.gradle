@@ -1,0 +1,32 @@
+// 1. 우리가 사용할 플러그인들 (Java, Application)
+plugins {
+    id 'java'                // 자바 프로젝트임을 명시
+    id 'application'         // 실행 가능한 애플리케이션임을 명시
+}
+
+// 2. 라이브러리를 다운로드할 중앙 창고 (Maven 중앙 저장소)
+repositories {
+    mavenCentral()
+}
+
+// 3. 우리가 필요한 라이브러리(의존성) 목록
+dependencies {
+    // ⬇️ 테스트를 위한 JUnit 5
+    // 'platform'을 사용하면 api, engine 등의 버전을 한 번에 관리해 줍니다.
+    testImplementation platform('org.junit:junit-bom:6.0.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // ⬇️ 테스트를 위한 AssertJ
+    testImplementation 'org.assertj:assertj-core:3.27.6'
+}
+
+// 4. 이 애플리케이션의 메인 클래스가 무엇인지 알려주기
+application {
+    // 'vending' 패키지 안에 있는 'App' 클래스가 메인이라고 알려줌
+    mainClass = 'vending.App'
+}
+
+// 5. 테스트를 실행할 때 JUnit 5 플랫폼을 사용하라고 명시
+test {
+    useJUnitPlatform()
+}
