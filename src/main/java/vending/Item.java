@@ -19,4 +19,11 @@ public class Item {
             throw new IllegalArgumentException("[ERROR] 투입 금액은 10원 단위여야 합니다.");
         }
     }
+    public String getName() {
+        return name;
+    }
+    
+    public int getPrice() {
+        return price;
+    }
 }
