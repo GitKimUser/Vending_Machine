@@ -1,5 +1,7 @@
 package vending;
 
+import java.util.*;
+
 public class VendingMachine {
     private final Inventory inventory;
     private Money money;
@@ -23,5 +25,26 @@ public class VendingMachine {
 
     public int getRemainAmount() {
         return money.getAmount();
+    }
+
+    Map<Coin, Integer> getChanges() {
+        Map<Coin, Integer> changes = new EnumMap<>(Coin.class);
+
+        int remainAmount = money.getAmount(); // 현재 남은 돈 (예: 550원)
+
+        // 1. 큰 동전부터 순서대로 꺼냅니다 (500 -> 100 -> 50 -> 10)
+        for (Coin coin : Coin.getCoinsDesc()) {
+            int coinAmount = coin.getAmount();
+
+            // 2. 이 동전으로 몇 개나 거슬러 줄 수 있는지 계산
+            int count = remainAmount / coinAmount;
+            
+            // 3. 줄 수 있는 게 있다면 기록하고, 남은 돈 갱신
+            if(count > 0) {
+                changes.put(coin, count);   // 500원 1개 기록
+                remainAmount %= coinAmount; // 550 % 500 = 50원 남음
+            }
+        }
+        return changes;
     }
 }
