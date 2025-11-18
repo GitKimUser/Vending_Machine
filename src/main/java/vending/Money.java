@@ -2,7 +2,7 @@
 package vending;
 
 public class Money {
-    private final int amount;
+    private int amount;
 
     public Money(int amount) {
         validate(amount);
@@ -15,5 +15,16 @@ public class Money {
         }
     }
     
-    // (참고) getter 같은 건 아직 필요 없으니 만들지 않습니다. (YAGNI 원칙)
+    // 돈을 사용(차감)하는 메서드
+    public void spend(int price) {
+        if(this.amount < price) {
+            throw new IllegalArgumentException("[ERROR] 잔액이 부족합니다.");
+        }
+        this.amount -= price;
+    }
+    
+    // 현재 잔액을 알려주는 메서드
+    public int getAmount() {
+        return this.amount;
+    }
 }
