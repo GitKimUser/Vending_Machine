@@ -39,7 +39,7 @@ class VendingMachineTest {
         // then (500원 1개, 50원 1개여야 함)
         assertThat(changes.get(Coin.COIN_500)).isEqualTo(1);
         assertThat(changes.get(Coin.COIN_50)).isEqualTo(1);
-        assertThat(changes.get(Coin.COIN_100)).isNull(); // 100원은 없으므로 null (EnumMap 특성상 0이 아니라 null일 수 있음)
+        assertThat(changes.getOrDefault(Coin.COIN_100,0)).isEqualTo(0); // 100원은 없으므로 null (EnumMap 특성상 0이 아니라 null일 수 있음)
     }
 
     @Test
@@ -61,5 +61,25 @@ class VendingMachineTest {
         assertThat(changes.get(Coin.COIN_100)).isEqualTo(2); // 200원
         assertThat(changes.get(Coin.COIN_50)).isEqualTo(1);  // 50원
         assertThat(changes.get(Coin.COIN_10)).isEqualTo(1);  // 10원
+    }
+
+    @Test
+    @DisplayName("재고가 없는 상품을 구매하면 예외가 발생한다.")
+    void buySoldOutItem() {
+        // given
+        Inventory inventory = new Inventory();
+        // 콜라 1개만 넣음
+        inventory.add(new Item("콜라", 1000, 1)); 
+        
+        VendingMachine vm = new VendingMachine(inventory);
+        vm.insertMoney(2000);
+
+        // when
+        vm.buy("콜라"); // 1개 구매 (남은 재고 0개)
+
+        // then (재고 0개인 상태에서 또 사려고 하면 예외 발생!)
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> vm.buy("콜라"))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("[ERROR] 상품의 재고가 부족");
     }
 }

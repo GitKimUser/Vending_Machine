@@ -17,7 +17,7 @@ class ItemTest {
         // when & then
         assertThatThrownBy(() -> new Item(name, price, quantity))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR]");
+                .hasMessageContaining("[ERROR] 상품 가격은");
     }
 
     @Test
@@ -31,6 +31,6 @@ class ItemTest {
         // when & then
         assertThatThrownBy(() -> new Item(name, price, quantity))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR]");
+                .hasMessageContaining("[ERROR] 상품 가격은");
     }
 }
